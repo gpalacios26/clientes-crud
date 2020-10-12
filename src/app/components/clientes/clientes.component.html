@@ -1,0 +1,43 @@
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title text-center">Mantenimiento de Clientes</h3>
+        <div class="float-right mb-3">
+            <a [routerLink]="['/crear-cliente']" class="btn btn-sm btn-success mr-2">Crear Cliente</a>
+            <a href="{{url + 'clientes/descargar'}}" target="_blank" class="btn btn-sm btn-primary"
+                *ngIf="clientes">Exportar</a>
+        </div>
+
+        <div class="alert alert-success" *ngIf="!clientes">
+            Cargando...
+        </div>
+
+        <table class="table table-sm" *ngIf="clientes">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Apellidos</th>
+                    <th scope="col" class="text-center">Correo</th>
+                    <th scope="col" class="text-center">Fecha Creación</th>
+                    <th scope="col" class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cliente of clientes | paginate: { itemsPerPage: 10, currentPage: page }">
+                    <td>{{cliente.name}}</td>
+                    <td>{{cliente.surname}}</td>
+                    <td>{{cliente.email}}</td>
+                    <td>{{cliente.created_at | amLocale: 'es' | amDateFormat: 'DD-MM-YYYY'}}</td>
+                    <td class="text-center">
+                        <a [routerLink]="['/editar-cliente', cliente.id]" class="btn btn-sm btn-warning mr-2">Editar</a>
+                        <a (click)="delete(cliente.id)" class="btn btn-sm btn-danger">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

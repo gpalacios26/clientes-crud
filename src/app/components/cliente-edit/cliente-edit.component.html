@@ -1,0 +1,55 @@
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Editar Cliente</h3>
+
+        <div class="alert alert-success" *ngIf="status=='success'">
+            Datos actualizados correctamente
+        </div>
+
+        <div class="alert alert-danger" *ngIf="status=='error'">
+            Error al actualizar la información
+        </div>
+
+        <div class="alert alert-success" *ngIf="!cliente && !status">
+            Cargando...
+        </div>
+
+        <form #clienteForm="ngForm" (ngSubmit)="onSubmit(clienteForm)" class="col-md-6" *ngIf="cliente">
+            <div class="form-group">
+                <label for="name">Nombres</label>
+                <input type="text" name="name" #name="ngModel" [(ngModel)]="cliente.name" class="form-control" required
+                    pattern="[a-zA-ZÀ-ÿ ]+" />
+                <div *ngIf="!name.valid && name.touched" class="invalid-feedback d-block">
+                    El campo nombres es obligatorio
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="surname">Apellidos</label>
+                <input type="text" name="surname" #surname="ngModel" [(ngModel)]="cliente.surname" class="form-control"
+                    required pattern="[a-zA-ZÀ-ÿ ]+" />
+                <div *ngIf="!surname.valid && surname.touched" class="invalid-feedback d-block">
+                    El campo apellidos es obligatorio
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo</label>
+                <input type="email" name="email" #email="ngModel" [(ngModel)]="cliente.email" class="form-control"
+                    required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
+                <div *ngIf="!email.valid && email.touched" class="invalid-feedback d-block">
+                    El campo correo es obligatorio
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="archivo">Foto</label>
+                <input type="file" name="archivo" id="archivo" (change)="handleUpload($event)" class="form-control" />
+                <div *ngIf="cliente.image" class="mt-1 mb-3">
+                    <img src="{{url + 'clientes/imagen/' + cliente.image}}" class="img-thumbnail" style="max-width: 50%;">
+                </div>
+            </div>
+            <div class="float-right">
+                <a [routerLink]="['/clientes']" class="btn btn-danger mr-2">Cancelar</a>
+                <input type="submit" value="Guardar" class="btn btn-success" [disabled]="!clienteForm.form.valid" />
+            </div>
+        </form>
+    </div>
+</div>
